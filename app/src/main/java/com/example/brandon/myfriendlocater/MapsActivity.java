@@ -55,7 +55,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void doneLocationTask(ArrayList<Marker> returnedLocations) {
                 for (int i = 0; i < returnedLocations.size(); i++) {
                     Marker friendLocation = returnedLocations.get(i);
-                    LatLng friendLocationLatLng = new LatLng(Double.parseDouble(friendLocation.lng), Double.parseDouble(friendLocation.lat));
+                    LatLng friendLocationLatLng = new LatLng(Double.parseDouble(friendLocation.lat), Double.parseDouble(friendLocation.lng));
                     mMap.addMarker(new MarkerOptions().position(friendLocationLatLng).title(friendLocation.username));
 
                 }
@@ -70,10 +70,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void doneEventsTask(ArrayList<Event> returnedEvents) {
-                System.out.println("HERE");
+                
                 for (int i = 0; i < returnedEvents.size(); i++) {
                     Event newEvent = returnedEvents.get(i);
-                    LatLng eventLocationLatLng = new LatLng(Double.parseDouble(newEvent.lng), Double.parseDouble(newEvent.lat));
+
+                    LatLng eventLocationLatLng = new LatLng(Double.parseDouble(newEvent.lat), Double.parseDouble(newEvent.lng));
                     mMap.addMarker(new MarkerOptions().position(eventLocationLatLng)
                             .title(newEvent.title + ", " + newEvent.date + ", " + newEvent.time)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));

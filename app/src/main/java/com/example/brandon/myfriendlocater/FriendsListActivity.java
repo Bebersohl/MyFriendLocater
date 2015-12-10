@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,6 +35,7 @@ public class FriendsListActivity extends AppCompatActivity implements View.OnCli
         etNewFriend = (EditText) findViewById(R.id.etNewFriend);
         bAddFriend.setOnClickListener(this);
         bRemoveFriend.setOnClickListener(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         User currentUser = userLocalStore.getLoggedInUser();
         ServerRequests serverRequests = new ServerRequests(this);
         serverRequests.fetchUserFriendListDataInBackground(currentUser, new GetFriendListCallback() {

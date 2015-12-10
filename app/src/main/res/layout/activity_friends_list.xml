@@ -9,20 +9,6 @@
     tools:context="com.example.brandon.myfriendlocater.FriendsListActivity">
 
 
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
-        android:listSelector="#c5c5c5"
-        android:id="@+id/friendsListView"></ListView>
-
-
-    <EditText
-        android:layout_marginBottom="10dp"
-        android:id="@+id/etNewFriend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
     <Button
         android:layout_marginBottom="10dp"
         android:id="@+id/bAddFriend"
@@ -35,4 +21,19 @@
         android:text="Remove Friend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:listSelector="#c5c5c5"
+        android:id="@+id/friendsListView"></ListView>
+
+
+    <EditText
+        android:layout_marginBottom="10dp"
+        android:singleLine="true"
+        android:id="@+id/etNewFriend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
