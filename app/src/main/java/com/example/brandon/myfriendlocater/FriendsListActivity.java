@@ -43,10 +43,11 @@ public class FriendsListActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void doneFriendListTask(ArrayList<String> returnedFriendList) {
-
-                String[] friends = new String[returnedFriendList.size()];
-                friends = returnedFriendList.toArray(friends);
-
+                String[] friends = {"No friends"};
+                if(returnedFriendList != null) {
+                    friends = new String[returnedFriendList.size()];
+                    friends = returnedFriendList.toArray(friends);
+                }
                 ListAdapter listAdapter = new ArrayAdapter<String>(FriendsListActivity.this, android.R.layout.simple_selectable_list_item, friends);
                 ListView friendsListView = (ListView) findViewById(R.id.friendsListView);
 
