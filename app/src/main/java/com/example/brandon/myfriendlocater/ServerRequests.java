@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -71,6 +72,11 @@ public class ServerRequests {
     public void fetchFriendLocationDataInBackground(User user, GetUserCallback callBack){
         progressDialog.show();
         new fetchFriendLocationDataAsyncTask(user, callBack).execute();
+    }
+    public void fetchEventDataInBackground(User user, GetEventsCallback callBack){
+        progressDialog.show();
+
+        new fetchEventDataAsyncTask(user, callBack).execute();
     }
 
     public void fetchUserFriendListDataInBackground(User user, GetFriendListCallback callBack){
@@ -220,7 +226,61 @@ public class ServerRequests {
             super.onPostExecute(returnedFriendList);
         }
     }
+    public class fetchEventDataAsyncTask extends AsyncTask<Void, Void, ArrayList<Event>> {
+        User user;
+        GetEventsCallback userCallback;
+        public fetchEventDataAsyncTask(User user, GetEventsCallback userCallback) {
+            this.user = user;
+            this.userCallback = userCallback;
+        }
+        @Override
+        protected ArrayList<Event> doInBackground(Void... params) {
+            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+            dataToSend.add(new BasicNameValuePair("username", user.username));
 
+            HttpParams httpRequestParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+            HttpPost post = new HttpPost(SERVER_ADDRESS + "GetEvents.php");
+            ArrayList<Event> returnedEvents = new ArrayList<>();
+            try{
+                post.setEntity(new UrlEncodedFormEntity(dataToSend));
+                HttpResponse httpResponse = client.execute(post);
+
+                HttpEntity entity = httpResponse.getEntity();
+                String result = EntityUtils.toString(entity);
+                JSONArray jArray = new JSONArray(result);
+
+
+
+                if(jArray.length()==0){
+                    System.out.println("HERE");
+                    returnedEvents = null;
+                }else{
+                    for (int i = 0; i < jArray.length(); i++ ) {
+                        JSONObject jObject = jArray.getJSONObject(i);
+                        returnedEvents.add(new Event(jObject.getString("username"), jObject.getString("title"),
+                                jObject.getString("date"), jObject.getString("time"), jObject.getString("lat"),
+                                jObject.getString("lng")));
+
+                    }
+
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return returnedEvents;
+
+        }
+        @Override
+          protected void onPostExecute(ArrayList<Event> returnedEvents){
+            progressDialog.dismiss();
+            userCallback.doneEventsTask(returnedEvents);
+            super.onPostExecute(returnedEvents);
+        }
+    }
 
 
     public class fetchFriendLocationDataAsyncTask extends AsyncTask<Void, Void, ArrayList<Marker>> {

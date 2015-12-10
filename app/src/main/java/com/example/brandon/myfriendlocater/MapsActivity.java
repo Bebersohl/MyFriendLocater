@@ -53,7 +53,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         serverRequests.fetchFriendLocationDataInBackground(currentUser, new GetUserCallback() {
             @Override
             public void doneLocationTask(ArrayList<Marker> returnedLocations) {
-                for(int i = 0; i < returnedLocations.size(); i++) {
+                for (int i = 0; i < returnedLocations.size(); i++) {
                     Marker friendLocation = returnedLocations.get(i);
                     LatLng friendLocationLatLng = new LatLng(Double.parseDouble(friendLocation.lng), Double.parseDouble(friendLocation.lat));
                     mMap.addMarker(new MarkerOptions().position(friendLocationLatLng).title(friendLocation.username));
@@ -66,8 +66,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
+        serverRequests.fetchEventDataInBackground(currentUser, new GetEventsCallback() {
 
-        mMap.addMarker(new MarkerOptions().position(new LatLng(45, -45)).title("Tom's Birthday, 10/24/15, 5:00PM").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            @Override
+            public void doneEventsTask(ArrayList<Event> returnedEvents) {
+                System.out.println("HERE");
+                for (int i = 0; i < returnedEvents.size(); i++) {
+                    Event newEvent = returnedEvents.get(i);
+                    LatLng eventLocationLatLng = new LatLng(Double.parseDouble(newEvent.lng), Double.parseDouble(newEvent.lat));
+                    mMap.addMarker(new MarkerOptions().position(eventLocationLatLng)
+                            .title(newEvent.title + ", " + newEvent.date + ", " + newEvent.time)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                }
+            }
+        });
+                //mMap.addMarker(new MarkerOptions().position(new LatLng(45, -45)).title("Tom's Birthday, 10/24/15, 5:00PM").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
     }
 
     @Override

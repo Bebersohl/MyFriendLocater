@@ -17,6 +17,7 @@ interface GetUserCallback {
 interface GetFriendListCallback{
     public abstract void doneFriendListTask(ArrayList<String> returnedFriendList);
 
-    
-
+}
+interface GetEventsCallback{
+    public abstract void doneEventsTask(ArrayList<Event> returnedEvents);
 }
